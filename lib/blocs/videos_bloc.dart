@@ -18,15 +18,21 @@ class VideosBloc implements BlocBase { //o nosso bloc sera basicamente a ponte e
   final StreamController<String> _searchController = StreamController<String>();
   Sink get inSearch => _searchController.sink; //queremos receber dados de fora, por isso o sink
 
-  VideoBloc(){
+
+  VideosBloc(){
     api = Api();
     
     _searchController.stream.listen(_search);  //pegar a saida do searchController, ou seja, pra onde nossos dados vao ir
   }
 
   void _search(String search) async {
+    if(search != null){
+      _videosCrontroller.sink.add([]);
+      videos = await api.search(search);
+    } else {
+      videos += await api.nextPage();
+    }
 
-    videos = await api.search(search);
     _videosCrontroller.sink.add(videos);
 
   }

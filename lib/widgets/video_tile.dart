@@ -1,3 +1,5 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:favoritosyoutube/blocs/favorite_bloc.dart';
 import 'package:favoritosyoutube/models/video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +12,16 @@ class VideoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final bloc = BlocProvider.of<FavoriteBloc>(context);
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AspectRatio(
-            aspectRatio: 16.0/0.9,
+            aspectRatio: 16.0/9.0,
             child: Image.network(video.thumb, fit: BoxFit.cover,),
           ),
           Row(
@@ -46,11 +51,23 @@ class VideoTile extends StatelessWidget {
                   ]
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.star_border),
-                color: Colors.white,
-                iconSize: 30,
-                onPressed: (){},
+              //rxDart mt importante!.
+              StreamBuilder<Map<String, Video>>(
+                stream: bloc.outFav,//refazer o botaozinho quando algo mudar la no sink
+                builder: (context, snapshot){
+                  if(snapshot.hasData)
+                    return IconButton(
+                      icon: Icon(snapshot.data.containsKey(video.id) ?
+                      Icons.star : Icons.star_border),
+                      color: Colors.white,
+                      iconSize: 30,
+                      onPressed: (){
+                        bloc.toggleFavorite(video);
+                      },
+                    );
+                  else
+                    return CircularProgressIndicator();
+                },
               )
             ],
           )
