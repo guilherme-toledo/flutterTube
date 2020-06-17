@@ -36,11 +36,11 @@ class Api {
 
     if(response.statusCode == 200){ //se der certo
 
-      var decode = json.decode(response.body); //precisamos transformar em uma lista de videos. Tem q ser uma lista de objetos video, models => video.dart
+      var decoded = json.decode(response.body); //precisamos transformar em uma lista de videos. Tem q ser uma lista de objetos video, models => video.dart
 
-      _nextToken = decode["nextPageToken"];
+      _nextToken = decoded["nextPageToken"];
 
-      List<Video> videos = decode["items"].map<Video>( //dentro do items temos varios maps, cada map vao significar um video
+      List<Video> videos = decoded["items"].map<Video>( //dentro do items temos varios maps, cada map vao significar um video
           (map){
             return Video.fromJson(map); //pegou todos os mapas e transformou cada um em um arq video
           }
