@@ -5,6 +5,7 @@ import 'package:favoritosyoutube/blocs/favorite_bloc.dart';
 import 'package:favoritosyoutube/blocs/videos_bloc.dart';
 import 'package:favoritosyoutube/delegates/data_search.dart';
 import 'package:favoritosyoutube/models/video.dart';
+import 'package:favoritosyoutube/screens/favorites.dart';
 import 'package:favoritosyoutube/widgets/video_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,9 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.star),
             onPressed: (){
-
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) =>Favorites())
+              );
             },
           ),
           IconButton(
